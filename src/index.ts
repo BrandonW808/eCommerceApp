@@ -30,7 +30,7 @@ async function bootstrap() {
     // Initialize services
     if (config.features.backupService) {
       // Initialize backup service
-      const { default: backupService } = await import('@services/backup.service');
+      const { default: backupService } = await import('@services/backupService');
       await backupService.initialize();
       logger.info('Backup service initialized');
     }

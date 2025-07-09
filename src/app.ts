@@ -4,22 +4,22 @@ import morgan from 'morgan';
 import mongoSanitize from 'express-mongo-sanitize';
 import config from '@config/index';
 import logger, { stream } from '@utils/logger';
-import { 
-  helmetMiddleware, 
-  corsMiddleware, 
+import {
+  helmetMiddleware,
+  corsMiddleware,
   apiRateLimiter,
-  mongoSanitizeMiddleware 
-} from '@middleware/security.middleware';
-import { errorConverter, errorHandler, notFoundHandler } from '@middleware/error.middleware';
-import { sanitizeInput } from '@middleware/validation.middleware';
+  mongoSanitizeMiddleware
+} from '@middleware/securityMiddleware';
+import { errorConverter, errorHandler, notFoundHandler } from '@middleware/errorMiddleware';
+import { sanitizeInput } from '@middleware/validationMiddleware';
 import { v4 as uuidv4 } from 'uuid';
 
 // Import routes
-import authRoutes from '@routes/auth.routes';
-import customerRoutes from '@routes/customer.routes';
-import paymentRoutes from '@routes/payment.routes';
-import webhookRoutes from '@routes/webhook.routes';
-import healthRoutes from '@routes/health.routes';
+import authRoutes from '@routes/authRoutes';
+import customerRoutes from '@routes/customerRoutes';
+import paymentRoutes from '@routes/paymentRoutes';
+import webhookRoutes from '@routes/webhookRoutes';
+import healthRoutes from '@routes/healthRoutes';
 
 export class App {
   public app: Application;
@@ -135,7 +135,7 @@ export class App {
     // Graceful shutdown
     const gracefulShutdown = async (signal: string) => {
       logger.info(`${signal} received, starting graceful shutdown...`);
-      
+
       server.close(() => {
         logger.info('HTTP server closed');
       });
